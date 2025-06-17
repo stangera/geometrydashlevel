@@ -9,7 +9,7 @@ const firebaseConfig = {
   messagingSenderId: "165226981105",
   appId: "1:165226981105:web:db8e3a29f5e0ad8b212b50",
   measurementId: "G-MMX2NXFQ7V",
-  databaseURL: "https://geometrydashpastebin-default-rtdb.firebaseio.com"
+  databaseURL: "https://geometrydashpastebin-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
 const app = initializeApp(firebaseConfig);
