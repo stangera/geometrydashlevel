@@ -1,8 +1,6 @@
-// firebase импорты
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// конфиг
 const firebaseConfig = {
   apiKey: "AIzaSyAXxl4NlGp2-7XJQ1AOKRoO700Ap8D3wKs",
   authDomain: "geometrydashpastebin.firebaseapp.com",
@@ -14,7 +12,6 @@ const firebaseConfig = {
   databaseURL: "https://geometrydashpastebin-default-rtdb.firebaseio.com"
 };
 
-// инициализация
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
@@ -32,3 +29,25 @@ window.sendText = function () {
 
   input.value = '';
 };
+
+// отображение всех текстов
+const listDiv = document.getElementById("textList");
+
+onValue(ref(db, 'texts'), (snapshot) => {
+  const data = snapshot.val();
+  listDiv.innerHTML = ''; // очистить список
+
+  if (!data) {
+    listDiv.innerText = 'ничего нет';
+    return;
+  }
+
+  // собираем и сортируем по времени
+  const entries = Object.entries(data).sort((a, b) => b[1].timestamp - a[1].timestamp);
+
+  for (const [id, entry] of entries) {
+    const div = document.createElement("div");
+    div.textContent = entry.text;
+    listDiv.appendChild(div);
+  }
+});
