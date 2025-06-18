@@ -169,7 +169,18 @@ canvas.addEventListener('click', e => {
   });
 });
 
+function copyAllObjects() {
+  if (!globalData) return;
 
+  const entries = Object.entries(globalData).sort((a, b) => a[1].timestamp - b[1].timestamp);
+  const allText = entries.map(([_, entry]) => entry.text.trim()).join(';');
+
+  const output = document.getElementById('textOutput');
+  output.value = allText;
+  output.select();
+
+  console.log('copied level:', allText);
+}
 
 fetch("spritesheet.json").then(res => res.json()).then(data => {
   atlas = data.frames;
@@ -485,3 +496,4 @@ window.addEventListener('keydown', (e) => {
     timestamp: Date.now()
   });
 });
+window.copyAllObjects = copyAllObjects;
